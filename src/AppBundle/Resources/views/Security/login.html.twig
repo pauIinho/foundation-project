@@ -1,0 +1,21 @@
+{% extends "@App/base.html.twig" %}
+{% block title %}Войти в личный кабинет{% endblock %}
+{% block content %}
+    <div class="row">
+    <h3 align="center">Вход в личный кабинет</h3>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+        <form class="form-signin" role="form">
+            <input type="email" class="form-control" placeholder="Email" required autofocus>
+            <br>
+            <input type="password" class="form-control" placeholder="Пароль" required>
+            <br>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+        </form>
+    </div>
+    <!--Короче я чет не соображу как тут сделать адекватный отступ. Так что сорян... Пытался добиться, чтобы "белая" часть доходила почти до низа экранной страницы. На моем экране это выглядет нормально...(-->
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br>
+    </div>
+{% endblock %}
