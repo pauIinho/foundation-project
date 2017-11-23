@@ -1,0 +1,20 @@
+{% extends "@App/base.html.twig" %}
+{% block title %}Благотворительный фонд им. И.И. Иванова{% endblock %}
+{% block content %}
+    <div class="row" style="min-height: 450px;">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+            <h2 align="center">Благотворительный фонд им. И.И. Иванова</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p>По следующим ссылкам вы можете создать заявку на вещь, узнать о пожертвователях и детдомах:</p>
+            <ul>
+                <li><a href="{{ path('donations') }}">Пожертвования</a></li>
+                <li><a href="{{ path('wards') }}">Наши подопечные</a></li>
+                <li><a href="{{ path('contributors') }}">Наши благотворители</a></li>
+            </ul>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+{% endblock %}

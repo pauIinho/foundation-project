@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\WardRepository")
  * @ORM\Table(name="wards")
  */
 class Ward
@@ -46,7 +46,21 @@ class Ward
      *
      * @var string
      */
-    private $addess;
+    private $address;
+
+    /**
+     * @ORM\Column(name="description", type="string")
+     *
+     * @var string
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(name="image_path", type="string")
+     *
+     * @var string
+     */
+    private $imagePath;
 
     /**
      * @return int
@@ -115,16 +129,48 @@ class Ward
     /**
      * @return string
      */
-    public function getAddess()
+    public function getAddress()
     {
-        return $this->addess;
+        return $this->address;
     }
 
     /**
-     * @param string $addess
+     * @param string $address
      */
-    public function setAddess($addess)
+    public function setAddress($address)
     {
-        $this->addess = $addess;
+        $this->address = $address;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImagePath()
+    {
+        return $this->imagePath;
+    }
+
+    /**
+     * @param string $imagePath
+     */
+    public function setImagePath($imagePath)
+    {
+        $this->imagePath = $imagePath;
     }
 }

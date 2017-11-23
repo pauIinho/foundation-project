@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ContributorRepository")
  * @ORM\Table(name="contributors")
  */
 class Contributor
@@ -47,6 +47,20 @@ class Contributor
      * @var string
      */
     private $organizationName;
+
+    /**
+     * @ORM\Column(name="description", type="string")
+     *
+     * @var string
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(name="image_path", type="string")
+     *
+     * @var string
+     */
+    private $imagePath;
 
     /**
      * @return int
@@ -126,5 +140,37 @@ class Contributor
     public function setOrganizationName($organizationName)
     {
         $this->organizationName = $organizationName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImagePath()
+    {
+        return $this->imagePath;
+    }
+
+    /**
+     * @param string $imagePath
+     */
+    public function setImagePath($imagePath)
+    {
+        $this->imagePath = $imagePath;
     }
 }

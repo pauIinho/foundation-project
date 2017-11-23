@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\DonationRepository")
  * @ORM\Table(name="donations")
  */
 class Donation
@@ -43,7 +43,7 @@ class Donation
     private $name;
 
     /**
-     * @ORM\Column(name="name", type="string")
+     * @ORM\Column(name="description", type="string")
      *
      * @var string
      */
@@ -62,6 +62,13 @@ class Donation
      * @var integer
      */
     private $status;
+
+    /**
+     * @ORM\Column(name="image_path", type="string")
+     *
+     * @var string
+     */
+    private $imagePath;
 
     /**
      * @return int
@@ -173,5 +180,21 @@ class Donation
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImagePath()
+    {
+        return $this->imagePath;
+    }
+
+    /**
+     * @param string $imagePath
+     */
+    public function setImagePath($imagePath)
+    {
+        $this->imagePath = $imagePath;
     }
 }

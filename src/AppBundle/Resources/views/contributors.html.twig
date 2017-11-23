@@ -1,62 +1,22 @@
 {% extends "@App/base.html.twig" %}
 {% block title %}Наши благотворители{% endblock %}
 {% block content %}
+    {% for contributor in contributors %}
     <div class="row">
         <div class="col-md-1">
         </div>
         <div class="col-md-1">
-            <img src="/images/nikolaenko.png" width="120" height="100" align="right" alt="Николаенко">
+            <img src="{{ contributor.imagePath }}" width="120" height="100" align="right" alt="{{ contributor.name }}">
         </div>
         <div class="col-md-9">
-            <h2>Николай Николаевич Николаенко</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <h2>{{ contributor.name }}</h2>
+            <p>{{ contributor.description }}</p>
             <p><a class="btn btn-default" href="#" role="button">Читать полностью &raquo;</a></p>
         </div>
         <div class="col-md-1">
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-1">
-            <img src="/images/linia.png" width="120" height="100" align="right" alt="Линия">
-        </div>
-        <div class="col-md-9">
-            <h2>Фонд "Линия жизни"</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn btn-default" href="#" role="button">Читать полностью &raquo;</a></p>
-        </div>
-        <div class="col-md-1">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-1">
-            <img src="/images/dobro.png" width="120" height="100" align="right" alt="Добро">
-        </div>
-        <div class="col-md-9">
-            <h2>Фонд "Быть добру"</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn btn-default" href="#" role="button">Читать полностью &raquo;</a></p>
-        </div>
-        <div class="col-md-1">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-1">
-            <img src="/images/djoly.png" width="120" height="100" align="right" alt="Джоли">
-        </div>
-        <div class="col-md-9">
-            <h2>Анджи Джо</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn btn-default" href="#" role="button">Читать полностью &raquo;</a></p>
-        </div>
-        <div class="col-md-1">
-        </div>
-    </div>
+    {% endfor %}
 
     <div class="row">
         <div class="col-md-4">
@@ -66,11 +26,6 @@
             <ul class="pagination">
                 <li><a href="#">&laquo;</a></li>
                 <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">...</a></li>
                 <li><a href="#">&raquo;</a></li>
             </ul>
         </div>
