@@ -10,14 +10,16 @@ class PageController extends Controller
     /**
      * @Route("/", name="index")
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         return $this->render('@App/index.html.twig');
     }
 
     /**
      * @Route("/donations", name="donations")
      */
-    public function donationsAction() {
+    public function donationsAction()
+    {
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
         $repository = $em->getRepository('AppBundle:Donation');
@@ -31,7 +33,8 @@ class PageController extends Controller
     /**
      * @Route("/contributors", name="contributors")
      */
-    public function contributorsAction() {
+    public function contributorsAction()
+    {
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
         $repository = $em->getRepository('AppBundle:Contributor');
@@ -45,7 +48,8 @@ class PageController extends Controller
     /**
      * @Route("/wards", name="wards")
      */
-    public function wardsAction() {
+    public function wardsAction()
+    {
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
         $repository = $em->getRepository('AppBundle:Ward');
@@ -59,14 +63,16 @@ class PageController extends Controller
     /**
      * @Route("/about", name="about")
      */
-    public function aboutAction() {
+    public function aboutAction()
+    {
         return $this->render('@App/about.html.twig');
     }
 
     /**
      * @Route("/contacts", name="contacts")
      */
-    public function contactsAction() {
+    public function contactsAction()
+    {
         return $this->render('@App/contacts.html.twig');
     }
 }
