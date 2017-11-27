@@ -47,6 +47,12 @@ class User extends BaseUser
      */
     private $type;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->roles = [ 'ROLE_USER' ];
+    }
+
     /**
      * @return string
      */

@@ -6,16 +6,21 @@
     <div class="col-md-4">
     </div>
     <div class="col-md-4">
-        <form class="form-signin" role="form">
-            <input type="email" class="form-control" placeholder="Email" required autofocus>
+        <form class="form-signin" role="form" action="{{ path("fos_user_security_check") }}" method="post" accept-charset="UTF-8" role="form">
+            <input type="email" class="form-control" placeholder="Email" id="username" name="_username"  required autofocus>
             <br>
-            <input type="password" class="form-control" placeholder="Пароль" required>
+            <input type="password" class="form-control" id="password" name="_password" placeholder="Пароль" required>
             <br>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" id="_submit" name="_submit">Войти</button>
         </form>
     </div>
     <!--Короче я чет не соображу как тут сделать адекватный отступ. Так что сорян... Пытался добиться, чтобы "белая" часть доходила почти до низа экранной страницы. На моем экране это выглядет нормально...(-->
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     <br><br><br><br><br><br>
     </div>
+    {% if error %}
+        <script>
+            $.notify('{{ error.messageKey|trans(error.messageData, 'security') }}', 'error');
+        </script>
+    {% endif %}
 {% endblock %}

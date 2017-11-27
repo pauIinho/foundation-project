@@ -35,42 +35,42 @@ class Ward
     private $orders;
 
     /**
-     * @ORM\Column(name="name", type="string", length=100)
+     * @ORM\Column(name="name", type="string", length=100, nullable=true)
      *
      * @var string
      */
     private $name;
 
     /**
-     * @ORM\Column(name="address", type="string", length=100)
+     * @ORM\Column(name="address", type="string", length=100, nullable=true)
      *
      * @var string
      */
     private $address;
 
     /**
-     * @ORM\Column(name="full_name", type="string", length=100)
+     * @ORM\Column(name="full_name", type="string", length=100, nullable=true)
      *
      * @var string
      */
     private $contactFullname;
 
     /**
-     * @ORM\Column(name="contact_phone", type="string", length=100)
+     * @ORM\Column(name="contact_phone", type="string", length=100, nullable=true)
      *
      * @var string
      */
     private $contactPhone;
 
     /**
-     * @ORM\Column(name="description", type="string")
+     * @ORM\Column(name="description", type="string", nullable=true)
      *
      * @var string
      */
     private $description;
 
     /**
-     * @ORM\Column(name="image_path", type="string")
+     * @ORM\Column(name="image_path", type="string", nullable=true)
      *
      * @var string
      */

@@ -2,11 +2,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Contributor;
+use AppBundle\Entity\Ward;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Form\Factory\FactoryInterface;
 use FOS\UserBundle\FOSUserEvents;
+use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -14,13 +17,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class RegistrationController extends BaseController
 {
     /**
      * @param Request $request
      *
-     * @Route("/reg", name="registration")
+     * @Route("/reg", name="app_registration")
      *
      *
      * @return Response
@@ -56,8 +60,24 @@ class RegistrationController extends BaseController
 
                 $userManager->updateUser($user);
 
+                $em = $this->getDoctrine()->getManager();
+                switch ($user->getType()) {
+                    case 'contributor':
+                        $contributor = new Contributor();
+                        $contributor->setUser($user);
+                        $em->persist($contributor);
+                        $em->flush();
+                        break;
+                    default:
+                        $ward = new Ward();
+                        $ward->setUser($user);
+                        $em->persist($ward);
+                        $em->flush();
+                        break;
+                }
+
                 if (null === $response = $event->getResponse()) {
-                    $url = $this->generateUrl('fos_user_registration_confirmed');
+                    $url = $this->generateUrl('index');
                     $response = new RedirectResponse($url);
                 }
 

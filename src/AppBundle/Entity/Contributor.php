@@ -35,35 +35,35 @@ class Contributor
     private $donations;
 
     /**
-     * @ORM\Column(name="name", type="string", length=100)
+     * @ORM\Column(name="name", type="string", length=100, nullable=true)
      *
      * @var string
      */
     private $name;
 
     /**
-     * @ORM\Column(name="organization_name", type="string", length=100)
+     * @ORM\Column(name="organization_name", type="string", length=100, nullable=true)
      *
      * @var string
      */
     private $organizationName;
 
     /**
-     * @ORM\Column(name="contact_phone", type="string", length=100)
+     * @ORM\Column(name="contact_phone", type="string", length=100, nullable=true)
      *
      * @var string
      */
     private $contactPhone;
 
     /**
-     * @ORM\Column(name="description", type="string")
+     * @ORM\Column(name="description", type="string", nullable=true)
      *
      * @var string
      */
     private $description;
 
     /**
-     * @ORM\Column(name="image_path", type="string")
+     * @ORM\Column(name="image_path", type="string", nullable=true)
      *
      * @var string
      */
