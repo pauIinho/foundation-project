@@ -49,6 +49,13 @@ class Contributor
     private $organizationName;
 
     /**
+     * @ORM\Column(name="contact_phone", type="string", length=100)
+     *
+     * @var string
+     */
+    private $contactPhone;
+
+    /**
      * @ORM\Column(name="description", type="string")
      *
      * @var string
@@ -156,6 +163,22 @@ class Contributor
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactPhone()
+    {
+        return $this->contactPhone;
+    }
+
+    /**
+     * @param string $contactPhone
+     */
+    public function setContactPhone($contactPhone)
+    {
+        $this->contactPhone = $contactPhone;
     }
 
     /**

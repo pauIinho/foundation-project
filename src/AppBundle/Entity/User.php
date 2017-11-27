@@ -27,14 +27,14 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Contributor", mappedBy="contributor")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Contributor", mappedBy="user")
      *
      * @var \AppBundle\Entity\Contributor
      */
     private $contributor;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Contributor", mappedBy="ward")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Ward", mappedBy="user")
      *
      * @var \AppBundle\Entity\Ward
      */

@@ -20,7 +20,7 @@ class Ward
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User", inversedBy="contributor")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User", inversedBy="ward")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      *
      * @var \AppBundle\Entity\User
@@ -47,6 +47,20 @@ class Ward
      * @var string
      */
     private $address;
+
+    /**
+     * @ORM\Column(name="full_name", type="string", length=100)
+     *
+     * @var string
+     */
+    private $contactFullname;
+
+    /**
+     * @ORM\Column(name="contact_phone", type="string", length=100)
+     *
+     * @var string
+     */
+    private $contactPhone;
 
     /**
      * @ORM\Column(name="description", type="string")
@@ -140,6 +154,38 @@ class Ward
     public function setAddress($address)
     {
         $this->address = $address;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactFullname()
+    {
+        return $this->contactFullname;
+    }
+
+    /**
+     * @param string $contactFullname
+     */
+    public function setContactFullname($contactFullname)
+    {
+        $this->contactFullname = $contactFullname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactPhone()
+    {
+        return $this->contactPhone;
+    }
+
+    /**
+     * @param string $contactPhone
+     */
+    public function setContactPhone($contactPhone)
+    {
+        $this->contactPhone = $contactPhone;
     }
 
     /**
