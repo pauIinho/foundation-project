@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,12 +29,12 @@ class Donation
     private $contributor;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Order", inversedBy="donations")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Order", inversedBy="donations")
+     * @ORM\JoinTable(name="orders_donations")
      *
-     * @var \AppBundle\Entity\Contributor
+     * @var \AppBundle\Entity\Order
      */
-    private $order;
+    private $orders;
 
     /**
      * @ORM\Column(name="name", type="string", length=100)
@@ -69,6 +70,14 @@ class Donation
      * @var string
      */
     private $imagePath;
+
+    /**
+     * Donation constructor.
+     */
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+    }
 
     /**
      * @return int

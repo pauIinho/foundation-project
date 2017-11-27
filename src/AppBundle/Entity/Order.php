@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,7 +29,7 @@ class Order
     private $ward;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Donation", mappedBy="order")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Donation", mappedBy="orders")
      *
      * @var \AppBundle\Entity\Donation
      */
@@ -55,6 +56,14 @@ class Order
      * @var integer
      */
     private $status;
+
+    /**
+     * Order constructor.
+     */
+    public function __construct()
+    {
+        $this->donations = new ArrayCollection();
+    }
 
     /**
      * @return int
