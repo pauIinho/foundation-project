@@ -65,7 +65,7 @@
                         </form>
                         <ul class="nav navbar-nav navbar-right">
                             {% if app.user %}
-                                <li {% if path(app.request.attributes.get('_route')) == path('login') %}class="active"{% endif %}><a href="{{ path('login') }}">Личный кабинет</a></li>
+                                <li {% if path(app.request.attributes.get('_route')) == path('login') %}class="active"{% endif %}><a href="{{ path('cabinet_profile') }}">Личный кабинет</a></li>
                                 <li {% if path(app.request.attributes.get('_route')) == path('fos_user_security_logout') %}class="active"{% endif %}><a href="{{ path('fos_user_security_logout') }}">Выйти</a></li>
                             {% else %}
                                 <li {% if path(app.request.attributes.get('_route')) == path('login') %}class="active"{% endif %}><a href="{{ path('login') }}">Войти</a></li>
@@ -77,7 +77,7 @@
             </nav>
         </div>
         {% block content%}{% endblock %}
-        {% include "AppBundle:Components:flash-notify.html.twig" %}
+        {% include "@App/Components/flash_notify.html.twig" %}
     </div>
     <div class="footer">
         <div id="footer">
