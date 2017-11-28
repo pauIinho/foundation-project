@@ -81,4 +81,35 @@ class DonationController extends Controller
         $this->addFlash('success', 'Пожертвование успешно добавлено');
         return $this->redirectToRoute('new_donation');
     }
+
+    /**
+     * List of contributor's donations
+     *
+     * @Route("/cabinet/donations/all", name="contributor_donations")
+     * @Method({"GET"})
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function contributorDonationsAction()
+    {
+        /** @var \AppBundle\Entity\User $user */
+        $user = $this->getUser();
+
+        if ('contributor' !== $user->getType()) {
+            throw new AccessDeniedHttpException('Функционал недоступен данному типу пользователя');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $contributorRepository = $em->getRepository('AppBundle\Entity\Contributor');
+        $contributor = $contributorRepository->findOneBy(['user' => $user]);
+
+        $donationRepostory = $em->getRepository('AppBundle\Entity\Donation');
+        $currentDonations = $donationRepostory->findBy(['contributor' => $contributor, 'status' => [0, 1]]);
+        $archiveDonations = $donationRepostory->findBy(['contributor' => $contributor, 'status' => 2]);
+
+        return $this->render('@App/Cabinet/Donation/cotributor_donations.html.twig', [
+            'currentDonations' => $currentDonations,
+            'archiveDonations' => $archiveDonations,
+        ]);
+    }
 }
