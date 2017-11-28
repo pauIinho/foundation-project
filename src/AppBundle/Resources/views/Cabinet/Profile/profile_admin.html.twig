@@ -5,7 +5,7 @@
         {% include "@App/Components/Cabinet-sidebar/sidebar_admin.html.twig" %}
         <div class="col-md-8">
             <h3 align="center">Профиль</h3>
-            <form class="form-horizontal col-md-offset-3 col-md-6">
+            <form class="form-horizontal col-md-offset-3 col-md-6" action="{{ path('cabinet_profile_update') }}" method="post">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" class="form-control" name="email" placeholder="Email" value="{{ user.email }}">
