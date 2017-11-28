@@ -41,27 +41,29 @@
             {% endif %}
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            var orderId = {{ order.id }};
-            var $removeButton = $('[data-cart-remove]');
+    {% if order %}
+        <script>
+            $(document).ready(function () {
+                var orderId = {{ order.id }};
+                var $removeButton = $('[data-cart-remove]');
 
-            $removeButton.on('click', function (e) {
-                e.preventDefault();
-                $.ajax({
-                    'url': '{{ path('remove_from_cart') }}',
-                    'type': 'post',
-                    'data': {order_id: orderId, donation_id: $(this).attr('data-cart-remove')},
-                    'success': function (data) {
-                        if (data.success == true) {
-                            $.notify('Дарение удалено из заявки', {position: 'bottom right', className: 'success'});
-                            location.reload();
-                        } else {
-                            $.notify('Произошла непредвиденная ошибка', {position: 'bottom right', className: 'error'});
+                $removeButton.on('click', function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        'url': '{{ path('remove_from_cart') }}',
+                        'type': 'post',
+                        'data': {order_id: orderId, donation_id: $(this).attr('data-cart-remove')},
+                        'success': function (data) {
+                            if (data.success == true) {
+                                $.notify('Дарение удалено из заявки', {position: 'bottom right', className: 'success'});
+                                location.reload();
+                            } else {
+                                $.notify('Произошла непредвиденная ошибка', {position: 'bottom right', className: 'error'});
+                            }
                         }
-                    }
+                    });
                 });
-            });
-        })
-    </script>
+            })
+        </script>
+    {% endif %}
 {% endblock %}
