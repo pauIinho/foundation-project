@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -100,6 +101,17 @@ class ProfileController extends Controller
                         $changesCount++;
                     }
 
+                    if ($request->files->has('image')) {
+                        /** @var File $file */
+                        $file = $request->files->get('image');
+
+                        $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                        $file->move($this->getParameter('uploads_directory'), $fileName);
+
+                        $contributor->setImage($fileName);
+                        $changesCount++;
+                    }
+
                     if ($changesCount > 0) {
                         $em->persist($contributor);
                         $em->flush();
@@ -142,6 +154,17 @@ class ProfileController extends Controller
                         $ward->getContactPhone() !== $form['contact_phone'] ) {
 
                         $ward->setContactPhone($form['contact_phone']);
+                        $changesCount++;
+                    }
+
+                    if ($request->files->has('image')) {
+                        /** @var File $file */
+                        $file = $request->files->get('image');
+
+                        $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                        $file->move($this->getParameter('uploads_directory'), $fileName);
+
+                        $ward->setImage($fileName);
                         $changesCount++;
                     }
 

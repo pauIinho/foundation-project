@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ContributorRepository")
@@ -63,11 +65,17 @@ class Contributor
     private $description;
 
     /**
-     * @ORM\Column(name="image_path", type="string", nullable=true)
+     * @ORM\Column(name="image", nullable=true, type="text")
      *
-     * @var string
+     * @Assert\NotBlank(message="Пожалуйста, загрузите файл")
+     * @Assert\File(
+     *     maxSize="1024k",
+     *     mimeTypes={"image/png", "image/jpeg"},
+     *     mimeTypesMessage = "Загрузите PNG или JPEG файл"
+     * )
+     * @var File
      */
-    private $imagePath;
+    private $image;
 
     /**
      * @return int
@@ -184,16 +192,16 @@ class Contributor
     /**
      * @return string
      */
-    public function getImagePath()
+    public function getImage()
     {
-        return $this->imagePath;
+        return $this->image;
     }
 
     /**
-     * @param string $imagePath
+     * @param string $image
      */
-    public function setImagePath($imagePath)
+    public function setImage($image)
     {
-        $this->imagePath = $imagePath;
+        $this->image = $image;
     }
 }

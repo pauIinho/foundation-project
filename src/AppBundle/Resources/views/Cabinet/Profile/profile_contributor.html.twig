@@ -5,7 +5,7 @@
         {% include "@App/Components/Cabinet-sidebar/sidebar_contributor.html.twig" %}
         <div class="col-md-8">
             <h3 align="center">Профиль</h3>
-            <form class="form-horizontal col-md-offset-3 col-md-6" action="{{ path('cabinet_profile_update') }}" method="post">
+            <form class="form-horizontal col-md-offset-3 col-md-6" enctype="multipart/form-data" action="{{ path('cabinet_profile_update') }}" method="post">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" class="form-control" name="email" placeholder="Email" value="{{ user.email }}">
@@ -35,6 +35,10 @@
                 <div class="form-group">
                     <label for="contact_phone">Телефон</label>
                     <input type="tel" class="form-control" name="contact_phone" placeholder="+7-999-111-22-33" value="{{ phone }}">
+                </div>
+                <div class="form-group">
+                    <label for="image">Загрузите изображение</label>
+                    <input class="form-control" type="file" name="image">
                 </div>
                 <div class="form-group">
                     <p align="center">
