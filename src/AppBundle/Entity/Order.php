@@ -37,14 +37,14 @@ class Order
 
 
     /**
-     * @ORM\Column(name="start_date", type="datetime")
+     * @ORM\Column(name="start_date", type="datetime", nullable=true)
      *
      * @var \DateTime
      */
     private $startDate;
 
     /**
-     * @ORM\Column(name="close_date", type="datetime")
+     * @ORM\Column(name="close_date", type="datetime", nullable=true)
      *
      * @var \DateTime
      */
@@ -111,6 +111,14 @@ class Order
     public function setDonations($donations)
     {
         $this->donations = $donations;
+    }
+
+    /**
+     * @param Donation $donation
+     */
+    public function addDonation(Donation $donation)
+    {
+        $this->donations->add($donation);
     }
 
     /**

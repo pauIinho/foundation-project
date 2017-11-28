@@ -202,6 +202,14 @@ class Donation
     /**
      * @param Order $order
      */
+    public function addOrder(Order $order)
+    {
+        $this->orders->add($order);
+    }
+
+    /**
+     * @param Order $order
+     */
     public function removeOrder(Order $order)
     {
         $this->orders->removeElement($order);

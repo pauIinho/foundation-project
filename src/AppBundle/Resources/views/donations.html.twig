@@ -2,21 +2,52 @@
 {% block title %}Пожетвования{% endblock %}
 {% block content %}
     <div class="row">
-        {% for donation in freeDonations %}
-        <div class="col-md-4">
-            <div class="col-md-12" style="min-height: 150px;">
-                <div class="col-md-7">
-                    <h3>{{ donation.name }}</h3>
-                    <p>{{ donation.description }}</p>
+        {% if freeDonations %}
+            {% for donation in freeDonations %}
+            <div class="col-md-4">
+                <div class="col-md-12" style="min-height: 150px;">
+                    <div class="col-md-7">
+                        <h3>{{ donation.name }}</h3>
+                        <p>{{ donation.description }}</p>
+                    </div>
+                    <div class="col-md-5">
+                        <img src="{{ donation.image }}" width="100" height="100" align="right" alt="{{ donation.name }}">
+                    </div>
                 </div>
-                <div class="col-md-5">
-                    <img src="{{ donation.image }}" width="100" height="100" align="right" alt="{{ donation.name }}">
+                {% if user and user.type == 'ward' %}
+                <div class="col-md-3">
+                    <p><a class="btn btn-default" href="" role="button" data-donation-add data-donation-id="{{ donation.id }}">Добавить в список желаний &raquo;</a></p>
                 </div>
+                {% endif %}
             </div>
-            <div class="col-md-3">
-                <p><a class="btn btn-default" href="#" role="button">Добавить в список желаний &raquo;</a></p>
-            </div>
-        </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <p align="center">
+                В настоящее время нет свободных пожертвований. Зайдите попозже!
+            </p>
+        {% endif %}
     </div>
+    <script>
+        $(document).ready(function () {
+            var $addButton = $('[data-donation-add]');
+
+            $addButton.on('click', function (e) {
+                e.preventDefault();
+                var donationId = $(this).attr('data-donation-id');
+                $.ajax({
+                    'url': '{{ path('add_to_cart') }}',
+                    'type': 'post',
+                    'data': {donation_id: donationId},
+                    'success': function (data) {
+                        if (data.success == true) {
+                            $.notify('Пожертвование успешно добавлено', {position: 'bottom right', className: 'success'});
+                            location.reload();
+                        } else {
+                            $.notify('Произошла непредвиденная ошибка', {position: 'bottom right', className: 'error'});
+                        }
+                    }
+                });
+            });
+        })
+    </script>
 {% endblock %}

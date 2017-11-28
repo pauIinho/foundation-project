@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -20,6 +21,8 @@ class PageController extends Controller
      */
     public function donationsAction()
     {
+        /** @var User $user */
+        $user = $this->getUser();
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
         $repository = $em->getRepository('AppBundle:Donation');
@@ -30,7 +33,8 @@ class PageController extends Controller
         $freeDonations = $query->getQuery()->getArrayResult();
 
         return $this->render('@App/donations.html.twig', [
-            'freeDonations' => $freeDonations
+            'freeDonations' => $freeDonations,
+            'user' => $user
         ]);
     }
 

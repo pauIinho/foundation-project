@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Cabinet;
 
+use AppBundle\Entity\Order;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,6 +68,7 @@ class OrderController extends Controller
 
         if (null !== $order) {
             $order->setStatus(1);
+            $order->setStartDate(new \DateTime());
             $em->persist($order);
             $em->flush();
             $this->addFlash('success', 'Заявка успешно создана');
@@ -93,7 +95,7 @@ class OrderController extends Controller
         $user = $this->getUser();
 
         if ('ward' !== $user->getType()) {
-            throw new AccessDeniedHttpException('Функционал недоступен данному типу пользователя');
+            return new JsonResponse(['success' => false]);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -165,7 +167,7 @@ class OrderController extends Controller
         $user = $this->getUser();
 
         if ('ward' !== $user->getType()) {
-            throw new AccessDeniedHttpException('Функционал недоступен данному типу пользователя');
+            return new JsonResponse(['success' => false]);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -185,5 +187,57 @@ class OrderController extends Controller
         }
 
         return new JsonResponse(['success' => false]);
+    }
+
+    /**
+     * Cancel ward's order
+     *
+     * @Route("/cabinet/orders/cart/add", name="add_to_cart")
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function addDonationToCartAction(Request $request)
+    {
+        $user = $this->getUser();
+
+        if ('ward' !== $user->getType()) {
+            throw new AccessDeniedHttpException('Функционал недоступен данному типу пользователя');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $wardRepository = $em->getRepository('AppBundle\Entity\Ward');
+        $ward = $wardRepository->findOneBy(['user' => $user]);
+
+        $donationId = $request->request->get('donation_id');
+
+        $donationRepository = $em->getRepository('AppBundle\Entity\Donation');
+        $donation = $donationRepository->find($donationId);
+
+        if ($donation === null) {
+            return new JsonResponse(['success' => false]);
+        }
+
+        $orderRepository = $em->getRepository('AppBundle\Entity\Order');
+        $cartOrder = $orderRepository->findOneBy(['ward' => $ward, 'status' => 0]);
+
+        if (null !== $cartOrder) {
+            $donation->addOrder($cartOrder);
+            $em->persist($donation);
+            $em->flush();
+        } else {
+            $order = new Order();
+            $order->setWard($ward);
+            $order->setStatus(0);
+            $em->persist($order);
+            $em->flush();
+            $donation->addOrder($order);
+            $em->persist($donation);
+            $em->flush();
+        }
+
+        return new JsonResponse(['success' => true]);
     }
 }

@@ -76,10 +76,10 @@
     <script>
         $(document).ready(function () {
             var $cancelButton = $('[data-order-cancel]');
-            var orderId = $cancelButton.attr('data-order-id');
 
             $cancelButton.on('click', function (e) {
                 e.preventDefault();
+                var orderId = $(this).attr('data-order-id');
                 $.ajax({
                     'url': '{{ path('cancel_order') }}',
                     'type': 'post',
