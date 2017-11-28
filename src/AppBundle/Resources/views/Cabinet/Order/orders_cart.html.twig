@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
     {% include "@App/Components/Cabinet-sidebar/sidebar_ward.html.twig" %}
-        <div class="col-md-8">
+        <div class="col-md-offset-1 col-md-7">
             <h3 align="center">Корзина</h3>
             {% if order and order.donations is not empty %}
             <div class="table-responsive">
@@ -32,9 +32,12 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                <p align="center">
-                    <input type="submit" class="btn btn-primary" value="Создать заявку">
-                </p>
+                <form action="{{ path('create_order') }}" method="post">
+                    <input type="hidden" name="order" value="{{ order.id }}">
+                    <p align="center">
+                        <input type="submit" class="btn btn-primary" value="Создать заявку">
+                    </p>
+                </form>
             </div>
             {% else %}
                 <p align="center">Корзина пуста</p>
