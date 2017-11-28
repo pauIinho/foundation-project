@@ -22,7 +22,7 @@
                                     <th>Описание</th>
                                     <th>Дата дарения</th>
                                     <th>Статус</th>
-                                    <th>Операции</th>
+                                    <th style="text-align: center">Операции</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,9 +38,11 @@
                                         {% set status_text = 'Одобрено' %}
                                     {% endif %}
                                     <td>{{ status_text }}</td>
-                                    <td>
-                                        <a href="#"><img src="/images/caran.png" width="20" height="20" alt="Редактирование"></a>
-                                        <a href="#"><img src="/images/cancel.png" width="20" height="20" alt="Отмена"></a>
+                                    <td align="center">
+                                        {% if donation.status == 0 %}
+                                        <a href="#"><img src="{{ asset('images/caran.png') }}" width="20" height="20" alt="Редактирование" title="Редактировать"></a>
+                                         <a href="" data-donation-cancel data-donation-id="{{ donation.id }}"><img src="{{ asset('images/cancel.png') }}" width="20" height="20" alt="Отмена" title="Отменить пожертвование"></a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -88,4 +90,27 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            var $cancelButton = $('[data-donation-cancel]');
+
+            $cancelButton.on('click', function (e) {
+                e.preventDefault();
+                var donationId = $(this).attr('data-donation-id');
+                $.ajax({
+                    'url': '{{ path('cancel_donation') }}',
+                    'type': 'post',
+                    'data': {donation_id: donationId},
+                    'success': function (data) {
+                        if (data.success == true) {
+                            $.notify('Пожертвование отменено', {position: 'bottom right', className: 'success'});
+                            location.reload();
+                        } else {
+                            $.notify('Произошла непредвиденная ошибка', {position: 'bottom right', className: 'error'});
+                        }
+                    }
+                });
+            });
+        })
+    </script>
 {% endblock %}

@@ -105,11 +105,48 @@ class DonationController extends Controller
 
         $donationRepostory = $em->getRepository('AppBundle\Entity\Donation');
         $currentDonations = $donationRepostory->findBy(['contributor' => $contributor, 'status' => [0, 1]]);
-        $archiveDonations = $donationRepostory->findBy(['contributor' => $contributor, 'status' => 2]);
+        $archiveDonations = $donationRepostory->findBy(['contributor' => $contributor, 'status' => 3]);
 
         return $this->render('@App/Cabinet/Donation/cotributor_donations.html.twig', [
             'currentDonations' => $currentDonations,
             'archiveDonations' => $archiveDonations,
         ]);
+    }
+
+    /**
+     * Cancel donation
+     *
+     * @Route("/cabinet/donations/cancel", name="cancel_donation")
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function cancelDonation(Request $request)
+    {
+        /** @var \AppBundle\Entity\User $user */
+        $user = $this->getUser();
+
+        if ('contributor' !== $user->getType()) {
+            throw new AccessDeniedHttpException('Функционал недоступен данному типу пользователя');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $contributorRepository = $em->getRepository('AppBundle\Entity\Contributor');
+        $contributor = $contributorRepository->findOneBy(['user' => $user]);
+
+        $donationId = $request->request->get('donation_id');
+        $donationRepository = $em->getRepository('AppBundle\Entity\Donation');
+        $donation = $donationRepository->findOneBy(['contributor' => $contributor, 'id' => $donationId, 'status' => 0]);
+
+        if (null !== $donation){
+            $donation->setStatus(2);
+            $em->persist($donation);
+            $em->flush();
+            return new JsonResponse(['success' => true]);
+        }
+
+        return new JsonResponse(['success' => false]);
     }
 }
