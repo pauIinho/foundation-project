@@ -6,3 +6,9 @@
     text-decoration: none;
     background-color: #eee;
 }
+
+.center{
+    width: 150px;
+    margin: 40px auto;
+
+}

@@ -51,6 +51,13 @@ class Donation
     private $description;
 
     /**
+     * @ORM\Column(name="count", type="integer")
+     *
+     * @var string
+     */
+    private $count;
+
+    /**
      * @ORM\Column(name="receipt_date", type="datetime")
      *
      * @var \DateTime
@@ -112,19 +119,19 @@ class Donation
     }
 
     /**
-     * @return Contributor
+     * @return string
      */
-    public function getOrder()
+    public function getCount()
     {
-        return $this->order;
+        return $this->count;
     }
 
     /**
-     * @param Contributor $order
+     * @param string $count
      */
-    public function setOrder($order)
+    public function setCount($count)
     {
-        $this->order = $order;
+        $this->count = $count;
     }
 
     /**

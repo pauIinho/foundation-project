@@ -1,0 +1,44 @@
+{% extends "@App/base.html.twig" %}
+{% block title %}Корзина - Личный кабинет{% endblock %}
+{% block content %}
+    <div class="row">
+    {% include "@App/Components/Cabinet-sidebar/sidebar_ward.html.twig" %}
+        <div class="col-md-8">
+            <h3 align="center">Корзина</h3>
+            {% if order and order.donations is not empty %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Название</th>
+                            <th style="text-align: center">Количество</th>
+                            <th style="text-align: center">Операции</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for donation in order.donations %}
+                            <tr>
+                                <td>{{ donation.id }}</td>
+                                <td>{{ donation.name }}</td>
+                                <td align="center">
+                                    <input type="number" value="{{ donation.count }}" style="width: 50px;">
+                                </td>
+                                <td align="center">
+                                    <a href="#"><img src="{{ asset('images/tick.svg') }}" width="20" height="20" alt="Изменить"></a>
+                                    <a href="#"><img src="{{ asset('images/delete.png') }}" width="20" height="20" alt="Удалить"></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <p align="center">
+                    <input type="submit" class="btn btn-primary" value="Создать заявку">
+                </p>
+            </div>
+            {% else %}
+                <p align="center">Корзина пуста</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
