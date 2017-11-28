@@ -23,10 +23,14 @@ class PageController extends Controller
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
         $repository = $em->getRepository('AppBundle:Donation');
-        $donations = $repository->findBy(['status' => 0]);
+        $query = $repository->createQueryBuilder('donation')
+            ->leftJoin('donation.orders', 'o')
+            ->where('o.id IS NULL');
+
+        $freeDonations = $query->getQuery()->getArrayResult();
 
         return $this->render('@App/donations.html.twig', [
-            'donations' => $donations
+            'freeDonations' => $freeDonations
         ]);
     }
 

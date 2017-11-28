@@ -2,71 +2,21 @@
 {% block title %}Пожетвования{% endblock %}
 {% block content %}
     <div class="row">
-        <div class="col-xs-1">
-        </div>
-        {% for donation in donations %}
-        <div class="col-xs-3">
-            <h2>{{ donation.name }}</h2>
-            <img src="{{ donation.imagePath }}" width="100" height="100" align="right" alt="{{ donation.name }}">
-            <p>{{ donation.description }}</p>
-        </div>
-        {% endfor %}
-        <div class="col-xs-1">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-1">
-        </div>
-        <div class="col-xs-3">
-            <p><a class="btn btn-default" href="#" role="button">Добавить в список желаний &raquo;</a></p>
-        </div>
-        <div class="col-xs-4">
-            <p><a class="btn btn-default" href="#" role="button">Добавить в список желаний &raquo;</a></p>
-        </div>
-        <div class="col-xs-3">
-            <p><a class="btn btn-default" href="#" role="button">Добавить в список желаний &raquo;</a></p>
-        </div>
-        <div class="col-xs-1">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-1">
-        </div>
-        {% for donation in donations %}
-            <div class="col-xs-3">
-                <h2>{{ donation.name }}</h2>
-                <img src="{{ donation.imagePath }}" width="100" height="100" align="right" alt="{{ donation.name }}">
-                <p>{{ donation.description }}</p>
+        {% for donation in freeDonations %}
+        <div class="col-md-4">
+            <div class="col-md-12" style="min-height: 150px;">
+                <div class="col-md-7">
+                    <h3>{{ donation.name }}</h3>
+                    <p>{{ donation.description }}</p>
+                </div>
+                <div class="col-md-5">
+                    <img src="{{ donation.image }}" width="100" height="100" align="right" alt="{{ donation.name }}">
+                </div>
             </div>
+            <div class="col-md-3">
+                <p><a class="btn btn-default" href="#" role="button">Добавить в список желаний &raquo;</a></p>
+            </div>
+        </div>
         {% endfor %}
-        <div class="col-xs-1">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-1">
-        </div>
-        <div class="col-xs-3">
-            <p><a class="btn btn-default" href="#" role="button">Добавить в список желаний &raquo;</a></p>
-        </div>
-        <div class="col-xs-4">
-            <p><a class="btn btn-default" href="#" role="button">Добавить в список желаний &raquo;</a></p>
-        </div>
-        <div class="col-xs-3">
-            <p><a class="btn btn-default" href="#" role="button">Добавить в список желаний &raquo;</a></p>
-        </div>
-        <div class="col-xs-1">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-        </div>
-        <div class="col-md-4">
-            <ul class="pagination">
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">...</a></li>
-                <li><a href="#">&raquo;</a></li>
-            </ul>
-        </div>
     </div>
 {% endblock %}
