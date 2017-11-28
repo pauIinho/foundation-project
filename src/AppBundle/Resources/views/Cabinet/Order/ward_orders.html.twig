@@ -1,0 +1,77 @@
+{% extends "@App/base.html.twig" %}
+{% block title %}Мои заявки - Личный кабинет{% endblock %}
+{% block content %}
+    <div class="row">
+        {% include "@App/Components/Cabinet-sidebar/sidebar_ward.html.twig" %}
+        <div class="col-md-8">
+            <h3 align="center">Мои заявки</h3>
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#current" data-toggle="tab">Текущие</a></li>
+                <li><a href="#archive" data-toggle="tab">Архив</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="current">
+                    {% if currentOrders and currentOrders | length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Описание</th>
+                                    <th>Дата подачи</th>
+                                    <th>Операции</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in currentOrders %}
+                                <tr>
+                                    <td>{{ order.id }}</td>
+                                    <td><a href="#">Заявка на "{{ (order.donations | first).name }} ... "</a></td>
+                                    <td>{{ order.startDate | date('Y-m-d H:i:s') }}</td>
+                                    <td>
+                                        <a href="#"><img src="/images/caran.png" width="30" height="30" alt="Редактирование"></a>
+                                        <a href="#"><img src="/images/cancel.png" width="30" height="30" alt="Отмена"></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p align="center">
+                        Нет заявок в настоящее время
+                    </p>
+                    {% endif %}
+                </div>
+                <div class="tab-pane" id="archive">
+                    {% if closedOrders and closedOrders | length > 0 %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Описание</th>
+                                    <th>Дата закрытия</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for order in closedOrders %}
+                                    <tr>
+                                        <td>{{ order.id }}</td>
+                                        <td><a href="#">Заявка на "{{ (order.donations | first).name }} ... "</a></td>
+                                        <td>{{ order.closeDate | date('Y-m-d H:i:s') }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p align="center">
+                            Нет закрытых заявок
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

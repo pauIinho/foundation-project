@@ -134,4 +134,32 @@ class OrderController extends Controller
             'success' => false
         ]);
     }
+
+    /**
+     * @Route("/cabinet/orders/all", name="ward_orders")
+     * @Method({"GET"})
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function wardOrdersAction()
+    {
+        $user = $this->getUser();
+
+        if ('ward' !== $user->getType()) {
+            throw new AccessDeniedHttpException('Функционал недоступен данному типу пользователя');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $wardRepository = $em->getRepository('AppBundle\Entity\Ward');
+        $ward = $wardRepository->findOneBy(['user' => $user]);
+
+        $orderRepository = $em->getRepository('AppBundle\Entity\Order');
+        $currentOrders = $orderRepository->findBy(['ward' => $ward, 'status' => 1]);
+        $closedOrders = $orderRepository->findBy(['ward' => $ward, 'status' => 3]);
+
+        return $this->render('@App/Cabinet/Order/ward_orders.html.twig', [
+            'currentOrders' => $currentOrders,
+            'closedOrders' => $closedOrders,
+        ]);
+    }
 }
