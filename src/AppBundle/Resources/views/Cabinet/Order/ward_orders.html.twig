@@ -29,8 +29,8 @@
                                     <td><a href="#">Заявка на "{{ (order.donations | first).name }} ... "</a></td>
                                     <td>{{ order.startDate | date('Y-m-d H:i:s') }}</td>
                                     <td>
-                                        <a href="#"><img src="/images/caran.png" width="30" height="30" alt="Редактирование"></a>
-                                        <a href="#"><img src="/images/cancel.png" width="30" height="30" alt="Отмена"></a>
+                                        <a href="#"><img src="/images/caran.png" width="30" height="30" alt="Редактирование" title="Редактировать заявку"></a>
+                                        <a href="" data-order-id="{{ order.id }}" data-order-cancel><img src="/images/cancel.png" width="30" height="30" alt="Отмена" title="Отменить заявку"></a>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -74,4 +74,27 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            var $cancelButton = $('[data-order-cancel]');
+            var orderId = $cancelButton.attr('data-order-id');
+
+            $cancelButton.on('click', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    'url': '{{ path('cancel_order') }}',
+                    'type': 'post',
+                    'data': {order_id: orderId},
+                    'success': function (data) {
+                        if (data.success == true) {
+                            $.notify('Заявка отменена', {position: 'bottom right', className: 'success'});
+                            location.reload();
+                        } else {
+                            $.notify('Произошла непредвиденная ошибка', {position: 'bottom right', className: 'error'});
+                        }
+                    }
+                });
+            });
+        })
+    </script>
 {% endblock %}

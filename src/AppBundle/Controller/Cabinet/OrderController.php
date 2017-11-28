@@ -112,9 +112,7 @@ class OrderController extends Controller
             $em->persist($donation);
             $em->flush();
 
-            return new JsonResponse([
-                'success' => true
-            ]);
+            return new JsonResponse(['success' => true]);
         }
 
         return new JsonResponse([
@@ -150,5 +148,42 @@ class OrderController extends Controller
             'currentOrders' => $currentOrders,
             'closedOrders' => $closedOrders,
         ]);
+    }
+
+    /**
+     * Cancel ward's order
+     *
+     * @Route("/cabinet/orders/cancel", name="cancel_order")
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function cancelOrderAction(Request $request)
+    {
+        $user = $this->getUser();
+
+        if ('ward' !== $user->getType()) {
+            throw new AccessDeniedHttpException('Функционал недоступен данному типу пользователя');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $wardRepository = $em->getRepository('AppBundle\Entity\Ward');
+        $ward = $wardRepository->findOneBy(['user' => $user]);
+
+        $orderId = $request->request->get('order_id');
+        $orderRepository = $em->getRepository('AppBundle\Entity\Order');
+        $order = $orderRepository->findOneBy(['ward' => $ward, 'id' => (int) $orderId]);
+
+        if (null !== $order) {
+            $order->setStatus(2);
+            $em->persist($order);
+            $em->flush();
+
+            return new JsonResponse(['success' => true]);
+        }
+
+        return new JsonResponse(['success' => false]);
     }
 }
