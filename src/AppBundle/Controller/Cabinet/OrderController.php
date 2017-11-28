@@ -12,6 +12,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class OrderController extends Controller
 {
     /**
+     * Cart for ward
+     *
      * @Route("/cabinet/orders/cart", name="orders_cart")
      * @Method({"GET"})
      *
@@ -38,6 +40,8 @@ class OrderController extends Controller
     }
 
     /**
+     * Create new order by ward
+     *
      * @Route("/cabinet/orders/create", name="create_order")
      * @Method({"POST"})
      *
@@ -75,25 +79,8 @@ class OrderController extends Controller
     }
 
     /**
-     * @Route("/cabinet/orders/update-count", name="update_donation_count")
-     * @Method({"POST"})
+     * Remove one donation from ward's order
      *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function updateDonationCountAction(Request $request)
-    {
-        $user = $this->getUser();
-
-        if ('ward' !== $user->getType()) {
-            throw new AccessDeniedHttpException('Функционал недоступен данному типу пользователя');
-        }
-
-
-    }
-
-    /**
      * @Route("/cabinet/orders/remove-donation", name="remove_from_cart")
      * @Method({"POST"})
      *
@@ -136,6 +123,8 @@ class OrderController extends Controller
     }
 
     /**
+     * List of opened and closed ward's orders
+     *
      * @Route("/cabinet/orders/all", name="ward_orders")
      * @Method({"GET"})
      *
