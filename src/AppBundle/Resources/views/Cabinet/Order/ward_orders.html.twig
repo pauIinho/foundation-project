@@ -19,7 +19,7 @@
                                     <th>№</th>
                                     <th>Описание</th>
                                     <th>Дата подачи</th>
-                                    <th>Операции</th>
+                                    <th style="text-align: center;">Операции</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -28,9 +28,8 @@
                                     <td>{{ order.id }}</td>
                                     <td><a href="#">Заявка на "{{ (order.donations | first).name }} ... "</a></td>
                                     <td>{{ order.startDate | date('Y-m-d H:i:s') }}</td>
-                                    <td>
-                                        <a href="#"><img src="/images/caran.png" width="30" height="30" alt="Редактирование" title="Редактировать заявку"></a>
-                                        <a href="" data-order-id="{{ order.id }}" data-order-cancel><img src="/images/cancel.png" width="30" height="30" alt="Отмена" title="Отменить заявку"></a>
+                                    <td align="center">
+                                        <a href="" data-order-id="{{ order.id }}" data-order-cancel><img src="{{ asset('images/cancel.png') }}" width="30" height="30" alt="Отмена" title="Отменить заявку"></a>
                                     </td>
                                 </tr>
                                 {% endfor %}
