@@ -1,11 +1,9 @@
-<div class="col-xs-2">
+<div class="col-md-3">
     <ul class="nav" style = "padding-left: 10pt">
-        <li class="nav-divider"></li>
         <li class="nav-header">Личный кабинет</li>
-        <li class="active"><a href="#">Профиль</a></li>
+        <li {% if path(app.request.attributes.get('_route')) == path('cabinet_profile') %}class="active"{% endif %}><a href="{{ path('cabinet_profile') }}">Профиль</a></li>
         <li class="nav-header">Заявки</li>
         <li><a href="#">Корзина</a></li>
         <li><a href="#">Мои заявки</a></li>
-        <li class="nav-divider"></li>
     </ul>
 </div>
