@@ -1,33 +1,26 @@
 {% extends "@App/base.html.twig" %}
 {% block title %}Наши благотворители{% endblock %}
 {% block content %}
-    {% for contributor in contributors %}
-    <div class="row">
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-1">
-            <img src="{{ contributor.imagePath }}" width="120" height="100" align="right" alt="{{ contributor.name }}">
-        </div>
-        <div class="col-md-9">
-            <h2>{{ contributor.name }}</h2>
-            <p>{{ contributor.description }}</p>
-            <p><a class="btn btn-default" href="#" role="button">Читать полностью &raquo;</a></p>
-        </div>
-        <div class="col-md-1">
-        </div>
-    </div>
-    {% endfor %}
-
-    <div class="row">
-        <div class="col-md-4">
-
-        </div>
-        <div class="col-md-4">
-            <ul class="pagination">
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">&raquo;</a></li>
-            </ul>
-        </div>
-    </div>
+    {% if contributors %}
+        {% for contributor in contributors %}
+            <div class="col-md-4">
+                <div class="col-md-12" style="min-height: 150px;">
+                    <div class="col-md-7">
+                        <h3>{{ contributor.name }}</h3>
+                        <p>{{ contributor.description }}</p>
+                    </div>
+                    <div class="col-md-5">
+                        <img src="/uploads/{{ contributor.image }}" height="100" align="right" alt="{{ contributor.name }}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <p><a class="btn btn-default" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" role="button">Подробнее &raquo;</a></p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p align="center">
+            В настоящее время нет пожертвователей. Но, когда-нибудь они появятся! Заходите.
+        </p>
+    {% endif %}
 {% endblock %}
