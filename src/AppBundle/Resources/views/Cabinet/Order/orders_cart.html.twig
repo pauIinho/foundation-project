@@ -12,8 +12,8 @@
                         <tr>
                             <th>№</th>
                             <th>Название</th>
-                            <th style="text-align: center">Количество</th>
-                            <th style="text-align: center">Операции</th>
+                            <th style="text-align: center;">Изображение</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -21,12 +21,9 @@
                             <tr>
                                 <td>{{ donation.id }}</td>
                                 <td>{{ donation.name }}</td>
+                                <td align="center"><img src="{{ donation.image }}" width="40" height="40"></td>
                                 <td align="center">
-                                    <input type="number" value="{{ donation.count }}" style="width: 50px;">
-                                </td>
-                                <td align="center">
-                                    <a href="#"><img src="{{ asset('images/tick.svg') }}" width="20" height="20" alt="Изменить"></a>
-                                    <a href="#"><img src="{{ asset('images/delete.png') }}" width="20" height="20" alt="Удалить"></a>
+                                    <a href="" data-cart-remove="{{ donation.id }}"><img src="{{ asset('images/delete.png') }}" width="20" height="20" alt="Удалить"></a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -44,4 +41,27 @@
             {% endif %}
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            var orderId = {{ order.id }};
+            var $removeButton = $('[data-cart-remove]');
+
+            $removeButton.on('click', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    'url': '{{ path('remove_from_cart') }}',
+                    'type': 'post',
+                    'data': {order_id: orderId, donation_id: $(this).attr('data-cart-remove')},
+                    'success': function (data) {
+                        if (data.success == true) {
+                            $.notify('Дарение удалено из заявки', {position: 'bottom right', className: 'success'});
+                            location.reload();
+                        } else {
+                            $.notify('Произошла непредвиденная ошибка', {position: 'bottom right', className: 'error'});
+                        }
+                    }
+                });
+            });
+        })
+    </script>
 {% endblock %}

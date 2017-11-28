@@ -114,6 +114,14 @@ class Order
     }
 
     /**
+     * @param Donation $donation
+     */
+    public function removeDonation(Donation $donation)
+    {
+        $this->donations->removeElement($donation);
+    }
+
+    /**
      * @return \DateTime
      */
     public function getStartDate()

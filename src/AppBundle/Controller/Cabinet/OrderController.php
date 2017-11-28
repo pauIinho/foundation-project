@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Cabinet;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -71,5 +72,66 @@ class OrderController extends Controller
 
         $this->addFlash('error', 'Не удается создать заявку');
         return $this->redirectToRoute('orders_cart');
+    }
+
+    /**
+     * @Route("/cabinet/orders/update-count", name="update_donation_count")
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function updateDonationCountAction(Request $request)
+    {
+        $user = $this->getUser();
+
+        if ('ward' !== $user->getType()) {
+            throw new AccessDeniedHttpException('Функционал недоступен данному типу пользователя');
+        }
+
+
+    }
+
+    /**
+     * @Route("/cabinet/orders/remove-donation", name="remove_from_cart")
+     * @Method({"POST"})
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function removeFromCartAction(Request $request)
+    {
+        $user = $this->getUser();
+
+        if ('ward' !== $user->getType()) {
+            throw new AccessDeniedHttpException('Функционал недоступен данному типу пользователя');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $wardRepository = $em->getRepository('AppBundle\Entity\Ward');
+        $ward = $wardRepository->findOneBy(['user' => $user]);
+
+        $orderId = $request->request->get('order_id');
+        $donationId = $request->request->get('donation_id');
+        $orderRepository = $em->getRepository('AppBundle\Entity\Order');
+        $order = $orderRepository->findOneBy(['ward' => $ward, 'id' => (int) $orderId]);
+
+        $donationRepository = $em->getRepository('AppBundle\Entity\Donation');
+        $donation = $donationRepository->find($donationId);
+        if (null !== $order) {
+            $donation->removeOrder($order);
+            $em->persist($donation);
+            $em->flush();
+
+            return new JsonResponse([
+                'success' => true
+            ]);
+        }
+
+        return new JsonResponse([
+            'success' => false
+        ]);
     }
 }

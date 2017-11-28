@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DonationRepository")
@@ -51,13 +53,6 @@ class Donation
     private $description;
 
     /**
-     * @ORM\Column(name="count", type="integer")
-     *
-     * @var string
-     */
-    private $count;
-
-    /**
      * @ORM\Column(name="receipt_date", type="datetime")
      *
      * @var \DateTime
@@ -72,11 +67,17 @@ class Donation
     private $status;
 
     /**
-     * @ORM\Column(name="image_path", type="string")
+     * @ORM\Column(name="image", nullable=true, type="text")
      *
-     * @var string
+     * @Assert\NotBlank(message="Пожалуйста, загрузите файл")
+     * @Assert\File(
+     *     maxSize="1024k",
+     *     mimeTypes={"image/png", "image/jpeg"},
+     *     mimeTypesMessage = "Загрузите PNG или JPEG файл"
+     * )
+     * @var File
      */
-    private $imagePath;
+    private $image;
 
     /**
      * Donation constructor.
@@ -116,22 +117,6 @@ class Donation
     public function setContributor($contributor)
     {
         $this->contributor = $contributor;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCount()
-    {
-        return $this->count;
-    }
-
-    /**
-     * @param string $count
-     */
-    public function setCount($count)
-    {
-        $this->count = $count;
     }
 
     /**
@@ -201,16 +186,24 @@ class Donation
     /**
      * @return string
      */
-    public function getImagePath()
+    public function getImage()
     {
-        return $this->imagePath;
+        return $this->image;
     }
 
     /**
-     * @param string $imagePath
+     * @param string $image
      */
-    public function setImagePath($imagePath)
+    public function setImage($image)
     {
-        $this->imagePath = $imagePath;
+        $this->image = $image;
+    }
+
+    /**
+     * @param Order $order
+     */
+    public function removeOrder(Order $order)
+    {
+        $this->orders->removeElement($order);
     }
 }

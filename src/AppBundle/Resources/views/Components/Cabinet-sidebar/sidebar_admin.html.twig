@@ -1,5 +1,5 @@
 <div class="col-md-3">
-    <ul class="nav" style = "padding-left: 10pt">
+    <ul class="nav nav-pills nav-stacked" style = "padding-left: 10pt">
         <li class="nav-header">Личный кабинет</li>
         <li {% if path(app.request.attributes.get('_route')) == path('cabinet_profile') %}class="active"{% endif %}><a href="{{ path('cabinet_profile') }}">Профиль</a></li>
         <li><a href="#">Базы</a></li>
