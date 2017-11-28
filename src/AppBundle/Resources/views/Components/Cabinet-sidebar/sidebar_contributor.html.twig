@@ -3,7 +3,7 @@
         <li class="nav-header">Личный кабинет</li>
         <li {% if path(app.request.attributes.get('_route')) == path('cabinet_profile') %}class="active"{% endif %}><a href="{{ path('cabinet_profile') }}">Профиль</a></li>
         <li class="nav-header">Пожертвования</li>
-        <li><a href="#">Новое</a></li>
+        <li {% if path(app.request.attributes.get('_route')) == path('new_donation') %}class="active"{% endif %}><a href="{{ path('new_donation') }}">Новое</a></li>
         <li><a href="#">Мои пожертвования</a></li>
     </ul>
 </div>

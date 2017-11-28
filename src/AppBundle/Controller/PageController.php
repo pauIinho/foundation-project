@@ -28,7 +28,9 @@ class PageController extends Controller
         $repository = $em->getRepository('AppBundle:Donation');
         $query = $repository->createQueryBuilder('donation')
             ->leftJoin('donation.orders', 'o')
-            ->where('o.id IS NULL');
+            ->where('o.id IS NULL')
+            ->andWhere('donation.status = 1')
+        ;
 
         $freeDonations = $query->getQuery()->getArrayResult();
 

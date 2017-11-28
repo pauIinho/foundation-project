@@ -190,7 +190,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Cancel ward's order
+     * Add new donation to ward's cart
      *
      * @Route("/cabinet/orders/cart/add", name="add_to_cart")
      * @Method({"POST"})

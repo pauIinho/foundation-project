@@ -1,0 +1,29 @@
+{% extends "@App/base.html.twig" %}
+{% block title %}Новое пожертвование - Личный кабинет{% endblock %}
+{% block content %}
+    <div class="row">
+    {% include "@App/Components/Cabinet-sidebar/sidebar_contributor.html.twig" %}
+        <div class="col-md-8">
+            <h3 align="center">Новое пожертвование</h3>
+            <form class="form-horizontal col-md-offset-2 col-md-8" enctype="multipart/form-data" action="{{ path('add_donation') }}" method="post">
+                <div class="form-group">
+                    <label  for="name">Название</label>
+                    <input type="text" class="form-control" name="name" placeholder="Введите краткое описательное название">
+                </div>
+                <div class="form-group">
+                    <label for="description">Описание</label>
+                    <textarea maxlength="255" rows="5" cols="68" name="description" placeholder="Введите подробное описание"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="image">Загрузите фото</label>
+                    <input class="form-control" type="file" name="image">
+                </div>
+                <div class="form-group">
+                    <p align="center">
+                        <input type="submit" class="btn btn-primary" value="Оформить пожертвование">
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
