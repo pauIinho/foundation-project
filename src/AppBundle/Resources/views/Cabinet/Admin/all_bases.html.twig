@@ -1,0 +1,194 @@
+{% extends "@App/base.html.twig" %}
+{% block title %}Базы - Личный кабинет{% endblock %}
+{% block content %}
+    <div class="row">
+    {% include "@App/Components/Cabinet-sidebar/sidebar_admin.html.twig" %}
+        <div class="col-md-8">
+            <h3 align="center">Базы</h3>
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#donations" data-toggle="tab">База пожертвований</a></li>
+                <li><a href="#orders" data-toggle="tab">База заявок</a></li>
+                <li><a href="#contributors" data-toggle="tab">База благотворителей</a></li>
+                <li><a href="#wards" data-toggle="tab">База детских домов</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="donations">
+                    {% if donations %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Название</th>
+                                <th>Описание</th>
+                                <th>Благотворитель</th>
+                                <th>Дата дарения</th>
+                                <th>Статус</th>
+                                <th style="text-align: center">Операции</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for donation in donations %}
+                                <tr>
+                                    <td>{{ donation.id }}</td>
+                                    <td><a href="#">{{ donation.name }}</a></td>
+                                    <td>{{ donation.description }}</td>
+                                    <td>{{ donation.contributor.name }}</td>
+                                    <td>{{ donation.receiptDate | date('Y-m-d H:i:s') }}</td>
+                                    {% if donation.status == 0 %}
+                                        <td>Требует одобрения</td>
+                                    {% elseif donation.status == 1 %}
+                                        <td>Одобрено</td>
+                                    {% elseif donation.status == 2 %}
+                                        <td>Отменено</td>
+                                    {% elseif donation.status == 3 %}
+                                        <td>Отправлено детям</td>
+                                    {% endif %}
+                                    <td align="center">
+                                    {% if donation.status == 0 %}
+                                        <a href="#"><img src="{{ asset('images/odobr.png') }}" width="20" height="20" alt="Одобрение"></a>
+                                    {% endif %}
+                                    {% if donation.status == 0 or donation.status == 1 %}
+                                        <a href="#"><img src="{{ asset('images/cancel.png') }}" width="20" height="20" alt="Отмена"></a>
+                                    {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                        <p align="center">
+                            Нет пожертвований
+                        </p>
+                    {% endif %}
+                </div>
+                <div class="tab-pane" id="orders">
+                    {% if orders %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Описание</th>
+                                <th>Заявитель</th>
+                                <th>Дата подачи</th>
+                                <th>Дата закрытия</th>
+                                <th>Статус</th>
+                                <th>Операции</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <td>{{ order.id }}</td>
+                                    <td><a href="">Заявка на "{{ (order.donations | first).name }} ..."</a></td>
+                                    <td>{{ order.ward.name }}</td>
+                                    <td>{{ order.startDate | date('Y-m-d H:i:s') }}</td>
+                                    {% if order.closeDate %}
+                                        <td>{{ order.closeDate | date('Y-m-d H:i:s') }}</td>
+                                    {% else %}
+                                        <td>---</td>
+                                    {% endif %}
+                                    {% if order.status == 1 %}
+                                        <td>В работе</td>
+                                    {% elseif order.status == 2 %}
+                                        <td>Отменена</td>
+                                    {% elseif order.status == 3 %}
+                                        <td>Завершена</td>
+                                    {% endif %}
+                                    <td>
+                                    {% if order.status == 1 %}
+                                        <a href=""><img src="{{ asset('images/odobr.png') }}" width="20" height="20" alt="Обработать" ></a>
+                                        <a href="#"><img src="{{ asset('images/cancel.png') }}" width="20" height="20" alt="Отмена"></a>
+                                    {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                        <p align="center">
+                            Нет заявок
+                        </p>
+                    {% endif %}
+                </div>
+                <div class="tab-pane" id="contributors">
+                    {% if contributors %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Организация</th>
+                                <th>ФИО</th>
+                                <th>Телефон</th>
+                                <th style="text-align: center;">Операции</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for contributor in contributors %}
+                                <tr>
+                                    <td>{{ contributor.id }}</td>
+                                    <td>{{ contributor.organizationName }}</td>
+                                    <td>{{ contributor.name }}</td>
+                                    <td>{{ contributor.contactPhone }}</td>
+                                    <td align="center">
+                                        {% if not contributor.user.confirmed %}
+                                        <a href=""><img src="{{ asset('images/odobr.png') }}" width="20" height="20" alt="Обработать" ></a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                        <p align="center">
+                            Нет благотворителей
+                        </p>
+                    {% endif %}
+                </div>
+                <div class="tab-pane" id="wards">
+                    {% if wards %}
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Организация</th>
+                                    <th>ФИО</th>
+                                    <th>Телефон</th>
+                                    <th style="text-align: center;">Операции</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for ward in wards %}
+                                    <tr>
+                                        <td>{{ ward.id }}</td>
+                                        <td>{{ ward.name }}</td>
+                                        <td>{{ ward.contactFullname }}</td>
+                                        <td>{{ ward.address }}</td>
+                                        <td>{{ ward.contactPhone }}</td>
+                                        <td align="center">
+                                            {% if not ward.user.confirmed %}
+                                                <a href=""><img src="{{ asset('images/odobr.png') }}" width="20" height="20" alt="Обработать" ></a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p align="center">
+                            Нет дет. домов
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

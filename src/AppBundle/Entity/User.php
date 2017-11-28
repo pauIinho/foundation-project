@@ -47,6 +47,13 @@ class User extends BaseUser
      */
     private $type;
 
+    /**
+     * @ORM\Column(name="confirmed", type="boolean")
+     *
+     * @var boolean
+     */
+    private $confirmed = false;
+
     public function __construct()
     {
         parent::__construct();
@@ -67,5 +74,21 @@ class User extends BaseUser
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConfirmed()
+    {
+        return $this->confirmed;
+    }
+
+    /**
+     * @param bool $confirmed
+     */
+    public function setConfirmed($confirmed)
+    {
+        $this->confirmed = $confirmed;
     }
 }
