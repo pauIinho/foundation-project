@@ -149,4 +149,98 @@ class DonationController extends Controller
 
         return new JsonResponse(['success' => false]);
     }
+
+    /**
+     * Edit form of contributor's donation
+     *
+     * @Route("/cabinet/donations/edit/{id}", name="contributor_edit_donation", defaults={"id" = 1})
+     * @Method({"GET"})
+     *
+     * @param $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editDonation($id)
+    {
+        /** @var \AppBundle\Entity\User $user */
+        $user = $this->getUser();
+
+        if ('contributor' !== $user->getType()) {
+            throw new AccessDeniedHttpException('Функционал недоступен данному типу пользователя');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $contributorRepository = $em->getRepository('AppBundle\Entity\Contributor');
+        $contributor = $contributorRepository->findOneBy(['user' => $user]);
+
+        $donationRepository = $em->getRepository('AppBundle\Entity\Donation');
+        $donation = $donationRepository->findOneBy(['contributor' => $contributor, 'id' => $id, 'status' => 0]);
+
+        if (null !== $donation){
+            return $this->render('@App/Cabinet/Donation/edit_donation.html.twig', [
+                'donation' => $donation
+            ]);
+        }
+
+        return $this->redirectToRoute('contributor_donations');
+    }
+
+    /**
+     * Update contributor's donation
+     *
+     * @Route("/cabinet/donations/update", name="contributor_update_donation",)
+     * @Method({"POST"})
+     *
+     * @param $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function updateDonation(Request $request)
+    {
+        /** @var \AppBundle\Entity\User $user */
+        $user = $this->getUser();
+
+        if ('contributor' !== $user->getType()) {
+            throw new AccessDeniedHttpException('Функционал недоступен данному типу пользователя');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $contributorRepository = $em->getRepository('AppBundle\Entity\Contributor');
+        $contributor = $contributorRepository->findOneBy(['user' => $user]);
+
+        $form = $request->request->all();
+
+        $donationRepository = $em->getRepository('AppBundle\Entity\Donation');
+        $donation = $donationRepository->findOneBy(['contributor' => $contributor, 'id' => $form['donation_id'], 'status' => 0]);
+
+        if ($donation !== null) {
+            if (isset($form['name']) && !empty($form['name']) && $donation->getImage() !== $form['name']) {
+                $donation->setName($form['name']);
+            }
+
+            if (isset($form['description']) && !empty($form['description']) && $donation->getImage() !== $form['description']) {
+                $donation->setDescription($form['description']);
+            }
+
+            if ($request->files->has('image') && null !== $request->files->get('image')) {
+                /** @var File $file */
+                $file = $request->files->get('image');
+
+                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                $file->move($this->getParameter('uploads_directory_donations'), $fileName);
+
+                $donation->setImage($fileName);
+            }
+
+            $em->persist($donation);
+            $em->flush();
+
+            $this->addFlash('success', 'Пожертвование успешно изменено');
+            return $this->redirectToRoute('contributor_edit_donation');
+        }
+
+        $this->addFlash('error', 'Возникла ошибка при редактировании пожертвования');
+        return $this->redirectToRoute('contributor_edit_donation');
+
+    }
 }

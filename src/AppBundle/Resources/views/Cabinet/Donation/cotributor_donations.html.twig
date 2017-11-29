@@ -40,7 +40,7 @@
                                     <td>{{ status_text }}</td>
                                     <td align="center">
                                         {% if donation.status == 0 %}
-                                        <a href="#"><img src="{{ asset('images/caran.png') }}" width="20" height="20" alt="Редактирование" title="Редактировать"></a>
+                                        <a href="{{ path('contributor_edit_donation', {id: donation.id}) }}" target="_blank"><img src="{{ asset('images/caran.png') }}" width="20" height="20" alt="Редактирование" title="Редактировать"></a>
                                          <a href="" data-donation-cancel data-donation-id="{{ donation.id }}"><img src="{{ asset('images/cancel.png') }}" width="20" height="20" alt="Отмена" title="Отменить пожертвование"></a>
                                         {% endif %}
                                     </td>
