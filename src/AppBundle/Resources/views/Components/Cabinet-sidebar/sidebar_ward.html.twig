@@ -4,6 +4,8 @@
         <li {% if path(app.request.attributes.get('_route')) == path('cabinet_profile') %}class="active"{% endif %}><a href="{{ path('cabinet_profile') }}">Профиль</a></li>
         <li class="nav-header">Заявки</li>
         <li {% if path(app.request.attributes.get('_route')) == path('orders_cart') %}class="active"{% endif %}><a href="{{ path('orders_cart') }}">Корзина</a></li>
-        <li {% if path(app.request.attributes.get('_route')) == path('ward_orders') %}class="active"{% endif %}><a href="{{ path('ward_orders') }}">Мои заявки</a></li>
+        {% if app.user.confirmed %}
+            <li {% if path(app.request.attributes.get('_route')) == path('ward_orders') %}class="active"{% endif %}><a href="{{ path('ward_orders') }}">Мои заявки</a></li>
+        {% endif %}
     </ul>
 </div>

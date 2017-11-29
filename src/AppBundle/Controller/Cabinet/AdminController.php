@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller\Cabinet;
 
+use AppBundle\Entity\Donation;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -144,6 +145,11 @@ class AdminController extends Controller
 
         if (null !== $order) {
             $order->setStatus(3);
+            $order->setCloseDate(new \DateTime());
+            /** @var Donation $donation */
+            foreach ($order->getDonations() as $donation) {
+                $donation->setStatus(3);
+            }
             $em->persist($order);
             $em->flush();
             return new JsonResponse(['success' => true]);

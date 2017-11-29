@@ -6,15 +6,12 @@
             <div class="col-md-4">
                 <div class="col-md-12" style="min-height: 150px;">
                     <div class="col-md-7">
-                        <h3>{{ ward.name }}</h3>
-                        <p>{{ ward.description }}</p>
+                        <h4>{{ ward.name }}</h4>
+                        <p><a class="btn btn-default" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" role="button">Подробнее &raquo;</a></p>
                     </div>
                     <div class="col-md-5">
                         <img src="/uploads/{{ ward.image }}" height="100" align="right" alt="{{ ward.name }}">
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <p><a class="btn btn-default" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" role="button">Подробнее &raquo;</a></p>
                 </div>
             </div>
         {% endfor %}

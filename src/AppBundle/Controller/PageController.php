@@ -48,7 +48,12 @@ class PageController extends Controller
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
         $repository = $em->getRepository('AppBundle:Contributor');
-        $contributors = $repository->findAll();
+        $query = $repository->createQueryBuilder('contributor')
+            ->leftJoin('contributor.user', 'u')
+            ->where('u.confirmed = 1')
+        ;
+
+        $contributors = $query->getQuery()->getArrayResult();
 
         return $this->render('@App/contributors.html.twig', [
             'contributors' => $contributors
@@ -63,7 +68,12 @@ class PageController extends Controller
         $doctrine = $this->getDoctrine();
         $em = $doctrine->getManager();
         $repository = $em->getRepository('AppBundle:Ward');
-        $wards = $repository->findAll();
+        $query = $repository->createQueryBuilder('ward')
+            ->leftJoin('ward.user', 'u')
+            ->where('u.confirmed = 1')
+        ;
+
+        $wards = $query->getQuery()->getArrayResult();
 
         return $this->render('@App/wards.html.twig', [
             'wards' => $wards

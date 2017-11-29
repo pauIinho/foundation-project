@@ -73,7 +73,7 @@ class OrderController extends Controller
             $em->flush();
             $this->addFlash('success', 'Заявка успешно создана');
 
-            return $this->redirectToRoute('orders_cart');
+            return $this->redirectToRoute('ward_orders');
         }
 
         $this->addFlash('error', 'Не удается создать заявку');

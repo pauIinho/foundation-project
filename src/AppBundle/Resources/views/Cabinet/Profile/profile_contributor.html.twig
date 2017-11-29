@@ -5,6 +5,9 @@
         {% include "@App/Components/Cabinet-sidebar/sidebar_contributor.html.twig" %}
         <div class="col-md-8">
             <h3 align="center">Профиль</h3>
+                {% if not app.user.confirmed %}
+                    <p align="center" style="color: darkred">Ваш профиль пока не подтвержден. Администратор сделает это в ближайшее время</p>
+                {% endif %}
             <form class="form-horizontal col-md-offset-3 col-md-6" enctype="multipart/form-data" action="{{ path('cabinet_profile_update') }}" method="post">
                 <div class="form-group">
                     <label for="email">Email</label>
