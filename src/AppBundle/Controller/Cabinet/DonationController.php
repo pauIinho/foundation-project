@@ -66,7 +66,7 @@ class DonationController extends Controller
         $donation->setReceiptDate(new \DateTime());
         $donation->setStatus(0);
 
-        if ($request->files->has('image')) {
+        if ($request->files->has('image') && null !== $request->files->get('image')) {
             /** @var File $file */
             $file = $request->files->get('image');
 

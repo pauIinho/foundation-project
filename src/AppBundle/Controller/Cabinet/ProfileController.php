@@ -72,7 +72,6 @@ class ProfileController extends Controller
         try {
             switch ($user->getType()) {
                 case 'contributor':
-                    $changesCount = 0;
                     $contributorRepository = $em->getRepository('AppBundle\Entity\Contributor');
                     $contributor = $contributorRepository->findOneBy(['user' => $user]);
 
@@ -84,24 +83,21 @@ class ProfileController extends Controller
                         $contributor->getName() !== $form['full_name']) {
 
                         $contributor->setName($form['full_name']);
-                        $changesCount++;
                     }
 
                     if (isset($form['organization']) && !empty($form['organization']) &&
                         $contributor->getOrganizationName() !== $form['organization']) {
 
                         $contributor->setOrganizationName($form['organization']);
-                        $changesCount++;
                     }
 
                     if (isset($form['contact_phone']) && !empty($form['contact_phone']) &&
                         $contributor->getContactPhone() !== $form['contact_phone']) {
 
                         $contributor->setContactPhone($form['contact_phone']);
-                        $changesCount++;
                     }
 
-                    if ($request->files->has('image')) {
+                    if ($request->files->has('image') && null !== $request->files->get('image')) {
                         /** @var File $file */
                         $file = $request->files->get('image');
 
@@ -109,19 +105,13 @@ class ProfileController extends Controller
                         $file->move($this->getParameter('uploads_directory'), $fileName);
 
                         $contributor->setImage($fileName);
-                        $changesCount++;
                     }
 
-                    if ($changesCount > 0) {
-                        $em->persist($contributor);
-                        $em->flush();
-                    } else {
-                        throw new Exception('Изменения отсутствуют!');
-                    }
+                    $em->persist($contributor);
+                    $em->flush();
 
                     break;
                 case 'ward':
-                    $changesCount = 0;
                     $wardRepository = $em->getRepository('AppBundle\Entity\Ward');
                     $ward = $wardRepository->findOneBy(['user' => $user]);
 
@@ -133,31 +123,27 @@ class ProfileController extends Controller
                         $ward->getContactFullname() !== $form['full_name']) {
 
                         $ward->setContactFullname($form['full_name']);
-                        $changesCount++;
                     }
 
                     if (isset($form['organization']) && !empty($form['organization']) &&
                         $ward->getName() !== $form['organization']) {
 
                         $ward->setName($form['organization']);
-                        $changesCount++;
                     }
 
                     if (isset($form['address']) && !empty($form['address']) &&
                         $ward->getAddress() !== $form['address']) {
 
                         $ward->setAddress($form['address']);
-                        $changesCount++;
                     }
 
                     if (isset($form['contact_phone']) && !empty($form['contact_phone']) &&
                         $ward->getContactPhone() !== $form['contact_phone'] ) {
 
                         $ward->setContactPhone($form['contact_phone']);
-                        $changesCount++;
                     }
 
-                    if ($request->files->has('image')) {
+                    if ($request->files->has('image') && null !== $request->files->get('image')) {
                         /** @var File $file */
                         $file = $request->files->get('image');
 
@@ -165,15 +151,10 @@ class ProfileController extends Controller
                         $file->move($this->getParameter('uploads_directory'), $fileName);
 
                         $ward->setImage($fileName);
-                        $changesCount++;
                     }
 
-                    if ($changesCount > 0) {
-                        $em->persist($ward);
-                        $em->flush();
-                    } else {
-                        throw new Exception('Изменения отсутствуют!');
-                    }
+                    $em->persist($ward);
+                    $em->flush();
 
                     break;
             }
