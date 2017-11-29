@@ -49,4 +49,208 @@ class AdminController extends Controller
             'wards' => $wards
         ]);
     }
+
+    /**
+     * Approve donation
+     *
+     * @Route("/cabinet/approve-donation", name="admin_approve_donation")
+     * @Method({"POST"})
+     *
+     * @param $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function approveDonation(Request $request)
+    {
+        /** @var \AppBundle\Entity\User $user */
+        $user = $this->getUser();
+
+        if ('admin' !== $user->getType()) {
+            return new JsonResponse(['success' => false]);
+        }
+
+        $donationId = $request->request->get('donation_id');
+        $em = $this->getDoctrine()->getManager();
+        $donationRepostory = $em->getRepository('AppBundle\Entity\Donation');
+        $donation = $donationRepostory->findOneBy(['id' => $donationId, 'status' => 0]);
+
+        if (null !== $donation) {
+            $donation->setStatus(1);
+            $em->persist($donation);
+            $em->flush();
+            return new JsonResponse(['success' => true]);
+        }
+
+        return new JsonResponse(['success' => false]);
+    }
+
+    /**
+     * Cancel donation
+     *
+     * @Route("/cabinet/cancel-donation", name="admin_cancel_donation")
+     * @Method({"POST"})
+     *
+     * @param $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function cancelDonation(Request $request)
+    {
+        /** @var \AppBundle\Entity\User $user */
+        $user = $this->getUser();
+
+        if ('admin' !== $user->getType()) {
+            return new JsonResponse(['success' => false]);
+        }
+
+        $donationId = $request->request->get('donation_id');
+        $em = $this->getDoctrine()->getManager();
+        $donationRepostory = $em->getRepository('AppBundle\Entity\Donation');
+        $donation = $donationRepostory->findOneBy(['id' => $donationId, 'status' => [0, 1]]);
+
+        if (null !== $donation) {
+            $donation->setStatus(2);
+            $em->persist($donation);
+            $em->flush();
+            return new JsonResponse(['success' => true]);
+        }
+
+        return new JsonResponse(['success' => false]);
+    }
+
+    /**
+     * Complete order
+     *
+     * @Route("/cabinet/complete-order", name="admin_complete_order")
+     * @Method({"POST"})
+     *
+     * @param $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function completeOrder(Request $request)
+    {
+        /** @var \AppBundle\Entity\User $user */
+        $user = $this->getUser();
+
+        if ('admin' !== $user->getType()) {
+            return new JsonResponse(['success' => false]);
+        }
+
+        $orderId = $request->request->get('order_id');
+        $em = $this->getDoctrine()->getManager();
+        $orderRepository = $em->getRepository('AppBundle\Entity\Order');
+        $order = $orderRepository->findOneBy(['id' => $orderId, 'status' => 1]);
+
+        if (null !== $order) {
+            $order->setStatus(3);
+            $em->persist($order);
+            $em->flush();
+            return new JsonResponse(['success' => true]);
+        }
+
+        return new JsonResponse(['success' => false]);
+    }
+
+    /**
+     * Cancel order
+     *
+     * @Route("/cabinet/cancel-order", name="admin_cancel_order")
+     * @Method({"POST"})
+     *
+     * @param $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function cancelOrder(Request $request)
+    {
+        /** @var \AppBundle\Entity\User $user */
+        $user = $this->getUser();
+
+        if ('admin' !== $user->getType()) {
+            return new JsonResponse(['success' => false]);
+        }
+
+        $orderId = $request->request->get('order_id');
+        $em = $this->getDoctrine()->getManager();
+        $orderRepository = $em->getRepository('AppBundle\Entity\Order');
+        $order = $orderRepository->findOneBy(['id' => $orderId, 'status' => 1]);
+
+        if (null !== $order) {
+            $order->setStatus(2);
+            $em->persist($order);
+            $em->flush();
+            return new JsonResponse(['success' => true]);
+        }
+
+        return new JsonResponse(['success' => false]);
+    }
+
+    /**
+     * Confirm contributor
+     *
+     * @Route("/cabinet/confirm-contributor", name="admin_confirm_contributor")
+     * @Method({"POST"})
+     *
+     * @param $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function confirmContributor(Request $request)
+    {
+        /** @var \AppBundle\Entity\User $user */
+        $user = $this->getUser();
+
+        if ('admin' !== $user->getType()) {
+            return new JsonResponse(['success' => false]);
+        }
+
+        $contributorId = $request->request->get('contributor_id');
+        $em = $this->getDoctrine()->getManager();
+        $contributorRepository = $em->getRepository('AppBundle\Entity\Contributor');
+        $contributor = $contributorRepository->findOneBy(['id' => $contributorId]);
+
+        if (null !== $contributor) {
+            $contributor->getUser()->setConfirmed(1);
+            $em->persist($contributor);
+            $em->flush();
+            return new JsonResponse(['success' => true]);
+        }
+
+        return new JsonResponse(['success' => false]);
+    }
+
+    /**
+     * Confirm ward
+     *
+     * @Route("/cabinet/confirm-ward", name="admin_confirm_ward")
+     * @Method({"POST"})
+     *
+     * @param $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function confirmWard(Request $request)
+    {
+        /** @var \AppBundle\Entity\User $user */
+        $user = $this->getUser();
+
+        if ('admin' !== $user->getType()) {
+            return new JsonResponse(['success' => false]);
+        }
+
+        $wardId = $request->request->get('ward_id');
+        $em = $this->getDoctrine()->getManager();
+        $wardRepository = $em->getRepository('AppBundle\Entity\Ward');
+        $ward = $wardRepository->findOneBy(['id' => $wardId]);
+
+        if (null !== $ward) {
+            $ward->getUser()->setConfirmed(1);
+            $em->persist($ward);
+            $em->flush();
+            return new JsonResponse(['success' => true]);
+        }
+
+        return new JsonResponse(['success' => false]);
+    }
 }

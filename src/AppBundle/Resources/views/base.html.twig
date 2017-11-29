@@ -58,7 +58,7 @@
                                 </ul>
                             </li>
                         </ul>
-                        {% if app.user.type == 'ward' %}
+                        {% if app.user and app.user.type == 'ward' %}
                             <a href="{{ path('orders_cart') }}"><img src="{{ asset('images/cart.png') }}" width="50" height="50" border="0" alt="Корзина" style="margin-left: 260px;" title="Перейти в корзину"></a>
                         {% endif %}
                         <ul class="nav navbar-nav navbar-right">

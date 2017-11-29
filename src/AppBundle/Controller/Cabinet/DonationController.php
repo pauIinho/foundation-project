@@ -129,7 +129,7 @@ class DonationController extends Controller
         $user = $this->getUser();
 
         if ('contributor' !== $user->getType()) {
-            throw new AccessDeniedHttpException('Функционал недоступен данному типу пользователя');
+            return new JsonResponse(['success' => false]);
         }
 
         $em = $this->getDoctrine()->getManager();

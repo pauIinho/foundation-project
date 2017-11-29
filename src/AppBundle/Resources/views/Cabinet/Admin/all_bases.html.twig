@@ -47,10 +47,10 @@
                                     {% endif %}
                                     <td align="center">
                                     {% if donation.status == 0 %}
-                                        <a href="#"><img src="{{ asset('images/odobr.png') }}" width="20" height="20" alt="Одобрение"></a>
+                                        <a href="" data-donation-approve data-donation-id="{{ donation.id }}"><img src="{{ asset('images/odobr.png') }}" width="20" height="20" alt="Одобрение" title="Одобрить"></a>
                                     {% endif %}
                                     {% if donation.status == 0 or donation.status == 1 %}
-                                        <a href="#"><img src="{{ asset('images/cancel.png') }}" width="20" height="20" alt="Отмена"></a>
+                                        <a href="" data-donation-cancel data-donation-id="{{ donation.id }}"><img src="{{ asset('images/cancel.png') }}" width="20" height="20" alt="Отмена" title="Отклонить"></a>
                                     {% endif %}
                                     </td>
                                 </tr>
@@ -100,8 +100,8 @@
                                     {% endif %}
                                     <td>
                                     {% if order.status == 1 %}
-                                        <a href=""><img src="{{ asset('images/odobr.png') }}" width="20" height="20" alt="Обработать" ></a>
-                                        <a href="#"><img src="{{ asset('images/cancel.png') }}" width="20" height="20" alt="Отмена"></a>
+                                        <a href="" data-order-complete data-order-id="{{ order.id }}"><img src="{{ asset('images/odobr.png') }}" width="20" height="20" alt="Обработать" title="Завершить"></a>
+                                        <a href="" data-order-cancel data-order-id="{{ order.id }}"><img src="{{ asset('images/cancel.png') }}" width="20" height="20" alt="Отмена" title="Отклонить"></a>
                                     {% endif %}
                                     </td>
                                 </tr>
@@ -137,7 +137,7 @@
                                     <td>{{ contributor.contactPhone }}</td>
                                     <td align="center">
                                         {% if not contributor.user.confirmed %}
-                                        <a href=""><img src="{{ asset('images/odobr.png') }}" width="20" height="20" alt="Обработать" ></a>
+                                        <a href="" data-contributor-confirm data-contributor-id="{{ contributor.id }}"><img src="{{ asset('images/odobr.png') }}" width="20" height="20" alt="Обработать" title="Подтвердить"></a>
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -160,6 +160,7 @@
                                     <th>№</th>
                                     <th>Организация</th>
                                     <th>ФИО</th>
+                                    <th>Адрес</th>
                                     <th>Телефон</th>
                                     <th style="text-align: center;">Операции</th>
                                 </tr>
@@ -174,7 +175,7 @@
                                         <td>{{ ward.contactPhone }}</td>
                                         <td align="center">
                                             {% if not ward.user.confirmed %}
-                                                <a href=""><img src="{{ asset('images/odobr.png') }}" width="20" height="20" alt="Обработать" ></a>
+                                                <a href="" data-ward-confirm data-ward-id="{{ ward.id }}"><img src="{{ asset('images/odobr.png') }}" width="20" height="20" alt="Обработать" title="Подтвердить"></a>
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -191,4 +192,134 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+
+            // Approving donation
+            var $approveDonationButton = $('[data-donation-approve]');
+
+            $approveDonationButton.on('click', function (e) {
+                e.preventDefault();
+                var donationId = $(this).attr('data-donation-id');
+                $.ajax({
+                    'url': '{{ path('admin_approve_donation') }}',
+                    'type': 'post',
+                    'data': {donation_id: donationId},
+                    'success': function (data) {
+                        if (data.success == true) {
+                            $.notify('Пожертвование одобрено', {position: 'bottom right', className: 'success'});
+                            location.reload();
+                        } else {
+                            $.notify('Произошла непредвиденная ошибка', {position: 'bottom right', className: 'error'});
+                        }
+                    }
+                });
+            });
+
+            // Cancel donation
+            var $cancelDonationButton = $('[data-donation-cancel]');
+
+            $cancelDonationButton.on('click', function (e) {
+                e.preventDefault();
+                var donationId = $(this).attr('data-donation-id');
+                $.ajax({
+                    'url': '{{ path('admin_cancel_donation') }}',
+                    'type': 'post',
+                    'data': {donation_id: donationId},
+                    'success': function (data) {
+                        if (data.success == true) {
+                            $.notify('Пожертвование отменено', {position: 'bottom right', className: 'success'});
+                            location.reload();
+                        } else {
+                            $.notify('Произошла непредвиденная ошибка', {position: 'bottom right', className: 'error'});
+                        }
+                    }
+                });
+            });
+
+            // Completing order
+            var $completeOrderButton = $('[data-order-complete]');
+
+            $completeOrderButton.on('click', function (e) {
+                e.preventDefault();
+                var orderId = $(this).attr('data-order-id');
+                $.ajax({
+                    'url': '{{ path('admin_complete_order') }}',
+                    'type': 'post',
+                    'data': {order_id: orderId},
+                    'success': function (data) {
+                        if (data.success == true) {
+                            $.notify('Заявка завершена', {position: 'bottom right', className: 'success'});
+                            location.reload();
+                        } else {
+                            $.notify('Произошла непредвиденная ошибка', {position: 'bottom right', className: 'error'});
+                        }
+                    }
+                });
+            });
+
+            // Cancel order
+            var $cancelOrderButton = $('[data-order-cancel]');
+
+            $cancelOrderButton.on('click', function (e) {
+                e.preventDefault();
+                var orderId = $(this).attr('data-order-id');
+                $.ajax({
+                    'url': '{{ path('admin_cancel_order') }}',
+                    'type': 'post',
+                    'data': {order_id: orderId},
+                    'success': function (data) {
+                        if (data.success == true) {
+                            $.notify('Заявка отменена', {position: 'bottom right', className: 'success'});
+                            location.reload();
+                        } else {
+                            $.notify('Произошла непредвиденная ошибка', {position: 'bottom right', className: 'error'});
+                        }
+                    }
+                });
+            });
+
+            // Confirm contributor
+            var $confirmContributorButton = $('[data-contributor-confirm]');
+
+            $confirmContributorButton.on('click', function (e) {
+                e.preventDefault();
+                var contributorId = $(this).attr('data-contributor-id');
+                $.ajax({
+                    'url': '{{ path('admin_confirm_contributor') }}',
+                    'type': 'post',
+                    'data': {contributor_id: contributorId},
+                    'success': function (data) {
+                        if (data.success == true) {
+                            $.notify('Профиль пожертвователя подтвержден', {position: 'bottom right', className: 'success'});
+                            location.reload();
+                        } else {
+                            $.notify('Произошла непредвиденная ошибка', {position: 'bottom right', className: 'error'});
+                        }
+                    }
+                });
+            });
+
+            // Confirm contributor
+            var $confirmWardButton = $('[data-ward-confirm]');
+
+            $confirmWardButton.on('click', function (e) {
+                e.preventDefault();
+                var wardId = $(this).attr('data-ward-id');
+                $.ajax({
+                    'url': '{{ path('admin_confirm_ward') }}',
+                    'type': 'post',
+                    'data': {ward_id: wardId},
+                    'success': function (data) {
+                        if (data.success == true) {
+                            $.notify('Профиль дет. дома подтвержден', {position: 'bottom right', className: 'success'});
+                            location.reload();
+                        } else {
+                            $.notify('Произошла непредвиденная ошибка', {position: 'bottom right', className: 'error'});
+                        }
+                    }
+                });
+            });
+        })
+    </script>
 {% endblock %}
