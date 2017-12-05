@@ -22,7 +22,6 @@ security:
 #            pattern: ^/
 #            anonymous: ~
         main:
-            host: "%host%"
             pattern: ^/
             form_login:
                 login_path: /login
