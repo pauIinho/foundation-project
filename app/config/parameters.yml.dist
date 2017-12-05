@@ -16,7 +16,9 @@ parameters:
     mailer_user: ~
     mailer_password: ~
     registration_model_class: AppBundle\Entity\User
-    uploads_directory: ~
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+    registration_model_class: AppBundle\Entity\User
+    uploads_directory: /web/uploads
+    uploads_directory_donations: /web/images
