@@ -25,6 +25,8 @@ security:
             host: "%host%"
             pattern: ^/
             form_login:
+                login_path: /login
+                check_path: /login_check
                 provider: fos_userbundle
 #                csrf_token_generator: security.csrf.token_manage
             logout:       true
